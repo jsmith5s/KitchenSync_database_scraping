@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "160229884184",
+    "project_id": "kitchensync-1b7bb",
+    "storage_bucket": "kitchensync-1b7bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160229884184:android:bf55436065275a40001e6d",
+        "android_client_info": {
+          "package_name": "com.example.kitchensync"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzNVz5Qw7wc40ZHNMp_ntgyJlDJPDrWUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160229884184:android:4305fb2f4be4074a001e6d",
+        "android_client_info": {
+          "package_name": "com.example.kitchensync_database_scraping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzNVz5Qw7wc40ZHNMp_ntgyJlDJPDrWUw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">KitchenSync_database_scraping</string>
+    <string name="home_text">KitchenSync Database Station</string>
+    <string name="home_blog_button">Scrape and Upload Blog Content</string>
+    <string name="pantry_button">Scrape and Upload Pantry Content</string>
+    <string name="recipes_button">Scrape and Upload Recipe Content</string>
+</resources>
