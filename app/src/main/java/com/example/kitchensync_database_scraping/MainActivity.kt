@@ -3,15 +3,17 @@ package com.example.kitchensync_database_scraping
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import com.fleeksoft.ksoup.Ksoup
 import com.fleeksoft.ksoup.network.parseGetRequestBlocking
 import com.fleeksoft.ksoup.select.Elements
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    val db = Firebase.firestore
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,37 +36,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun scrapePantry() {
 
-        val pantry = db.collection("appdata").document("appPantryItems")
+        val pantryRef = db.collection("appdata").document("appPantryItems")
         println("database ref")
 
         val webList = arrayOf("fruits", "vegetables", "meat", "seafood", "dairy-products",
             "nuts-and-oilseeds", "sugar-and-sugar-products", "cereals-and-pulses",
             "spices-and-herbs", "other-ingredients")
 
-        var webName = webList[0]
+        var index = 0
+        var webName = webList[index]
         var pageNum = 1
         println(webName)
-        while (true) {
-            val doc =
-                Ksoup.parseGetRequestBlocking(url = "https://food.ndtv.com/ingredient/loadmore/$webName/$pageNum/18")
-            if (!doc.hasText())
-                break
+        webList.forEach {
+            while (true) {
+                val doc =
+                    Ksoup.parseGetRequestBlocking(url = "https://food.ndtv.com/ingredient/loadmore/$it/$pageNum/18")
+                if (!doc.hasText())
+                    break
 
-            println("scraping")
-            val foodUrlNames: Elements = doc.select(".IngrLst-Ar_img")
-            val foodUrlPics: Elements = doc.select(".lz_img.IngrLst-Ar_img-full")
-            for (i in 0..<foodUrlNames.size) {
-                var name = foodUrlNames[i]
-                var url = foodUrlPics[i]
-                val foodName = name.attr("title")
-                val foodURL = url.attr("src")
+                println("scraping")
+                val foodUrlNames: Elements = doc.select(".IngrLst-Ar_img")
+                val foodUrlPics: Elements = doc.select(".lz_img.IngrLst-Ar_img-full")
+                for (i in 0..<foodUrlNames.size) {
+                    var name = foodUrlNames[i]
+                    var url = foodUrlPics[i]
+                    val foodName = name.attr("title")
+                    val foodURL = url.attr("src")
 
-                println(foodName)
-                pantry.set(RecipeFoodItem(foodName, foodURL))
+                    println(foodName)
+                    pantryRef.collection(it).document(foodName)
+                        .set(hashMapOf("imageURL" to foodURL), SetOptions.merge())
+                }
+                //println("" + foodUrlNames.size + " " + foodUrlPics.size)
+                //println(ingList)
+                pageNum++
             }
-            //println("" + foodUrlNames.size + " " + foodUrlPics.size)
-            //println(ingList)
-            pageNum++
+            Toast.makeText(this, "gathered $it info", Toast.LENGTH_SHORT)
+            pageNum = 1
         }
     }
 
@@ -73,4 +81,4 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-data class RecipeFoodItem(var foodName: String="", var imageUrl: String="")
+data class RecipeFoodItem(val foodName: String="", val imageUrl: String="")
