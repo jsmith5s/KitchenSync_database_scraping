@@ -37,16 +37,12 @@ class MainActivity : AppCompatActivity() {
     private fun scrapePantry() {
 
         val pantryRef = db.collection("appdata").document("appPantryItems")
-        println("database ref")
 
         val webList = arrayOf("fruits", "vegetables", "meat", "seafood", "dairy-products",
             "nuts-and-oilseeds", "sugar-and-sugar-products", "cereals-and-pulses",
             "spices-and-herbs", "other-ingredients")
 
-        var index = 0
-        var webName = webList[index]
         var pageNum = 1
-        println(webName)
         webList.forEach {
             while (true) {
                 val doc =
@@ -71,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                 //println(ingList)
                 pageNum++
             }
-            Toast.makeText(this, "gathered $it info", Toast.LENGTH_SHORT)
+            Toast.makeText(applicationContext, "gathered $it info", Toast.LENGTH_SHORT)
             pageNum = 1
         }
     }
